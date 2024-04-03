@@ -49,10 +49,10 @@ print(paste("Priemer dojazdu štvorvalcového automobilu (komplexný dataset):",
 
 # 7. Porovnanie modelov podľa RMSE
 rmse_values <- c(
-  sqrt(mean((auto_mpg$mpg - predict(mpg_model, auto_mpg))^2)),
-  sqrt(mean((auto_mpg$mpg - predict(mpg_model_with_cylinders, auto_mpg))^2)),
-  sqrt(mean((auto_mpg$mpg - predict(mpg_model_interaction, auto_mpg))^2)),
-  sqrt(mean((auto_mpg_full$mpg - predict(mpg_model_interaction_full, auto_mpg_full))^2))
+  sqrt(mean((predict(mpg_model_mtcars, mtcars) - mtcars$mpg)^2)),
+  sqrt(mean((predict(mpg_model_with_cylinders_mtcars, mtcars) - mtcars$mpg)^2)),
+  sqrt(mean((predict(mpg_model_interaction_mtcars, mtcars) - mtcars$mpg)^2)),
+  sqrt(mean((predict(mpg_model_interaction_full, auto_mpg_full) - auto_mpg_full$mpg)^2))
 )
 
 # Poradie modelov podľa RMSE
@@ -65,10 +65,10 @@ predicted_mpg <- predict(mpg_model_interaction_full, data.frame(displacement = 1
 print(paste("Predikovaný dojazd štvorvalcového automobilu so zdvihovým objemom 160 kubických palcov:", predicted_mpg))
 
 # 8. Model závislosti dojazdu iba od zdvihového objemu s vhodnou transformáciou
-mpg_model_displacement_only <- lm(mpg ~ log(displacement), data = auto_mpg)
+mpg_model_displacement_only <- lm(mpg ~ log(displacement), data = auto_mpg_full)
 
 # Vizualizácia modelu
-ggplot(auto_mpg, aes(x = displacement, y = mpg)) +
+ggplot(auto_mpg_full, aes(x = displacement, y = mpg)) +
   geom_point() +
   geom_smooth(method = "lm", formula = y ~ log(x), se = FALSE) +
   labs(x = "Zdvihový objem valcov", y = "Dojazd (MPG)")
